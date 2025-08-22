@@ -27,7 +27,7 @@ func GetPersonalChatID(c *gin.Context) {
 		libx.Err(c, 500, "查询ChatID记录失败", result.Error)
 		return
 	}
-	libx.Ok(c, http.StatusOK, "查询ChatID记录成功", charHistory.ChatIDs)
+	libx.Ok(c, "查询ChatID记录成功", charHistory.ChatIDs)
 }
 
 func ProductGenerate(c *gin.Context) {
@@ -152,5 +152,5 @@ func DeleteChatID(c *gin.Context) {
 		libx.Err(c, 500, "更新ChatID记录失败", err)
 		return
 	}
-	libx.Ok(c, http.StatusOK, "ChatID删除成功", nil)
+	libx.Ok(c, "ChatID删除成功", nil)
 }
