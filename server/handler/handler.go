@@ -100,19 +100,18 @@ func ProductGenerate(c *gin.Context) {
 	}
 	if len(gptresp.Choices) > 0 {
 		content := gptresp.Choices[0].Message.Content
-		libx.Ok(c, 200, content, nil)
-		//response, e := api.Cli.Client.Docx.Document.Create(c, larkdocx.NewCreateDocumentReqBuilder().
-		//	Body(larkdocx.NewCreateDocumentReqBodyBuilder().
-		//		FolderToken(req.Folder). // 文件夹 token，传空表示在根目录创建文档
-		//		Title(req.DocuTitle).    // 文档标题
-		//		Build()).
-		//	Build())
-		//if e != nil {
-		//	libx.Err(c, 500, "创建文档失败", e)
-		//	return
-		//}
-		//docID := response.Data.Document.DocumentId
-		//创建文档块
+
+		docToken, err := api.GenerateBlock(c, req.Folder, req.DocuTitle, content)
+		if err != nil {
+			libx.Err(c, 500, "创建飞书文档失败", err)
+			return
+		}
+		// 返回成功响应
+		res := map[string]interface{}{
+			"docToken": docToken,
+			"content":  content,
+		}
+		libx.Ok(c, "文档创建成功", res)
 	} else {
 		libx.Err(c, 500, "GPT响应中没有内容", nil)
 	}
